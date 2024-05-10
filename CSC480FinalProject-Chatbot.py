@@ -5,8 +5,6 @@ import os
 dotenv.load_dotenv() 
 openai.api_key = os.getenv("OPEN_API_KEY")
 
-chat_history = []
-
 def chat_with_AI(prompt):
     response = openai.chat.completions.create(
         model = "gpt-3.5-turbo",
@@ -16,6 +14,8 @@ def chat_with_AI(prompt):
     return response.choices[0].message.content.strip()
 
 if __name__ == "__main__":
+    conversations = ""
+
     while True:
         user_input = input("You: ")
 
@@ -23,8 +23,10 @@ if __name__ == "__main__":
             print("Chatbot: Goodbye!")
             break
 
-        response = chat_with_AI(user_input)
+        conversations += user_input
+        response = chat_with_AI(conversations)
         print("Chatbot: ", response)
+        conversations += response
 
 # ADDITIONAL COMMENTS
 # - On line #20, the "You: " inside of the 'input()' command should be changed to whoever the bot is talking to in the terminal.
