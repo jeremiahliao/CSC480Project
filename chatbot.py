@@ -29,4 +29,4 @@ if __name__ == "__main__":
         conversations += response
 
 # ADDITIONAL COMMENTS
-# - On line #20, the "You: " inside of the 'input()' command should be changed to whoever the bot is talking to in the terminal.
+# - On line #20, the "You: " inside of the 'input()' command could be changed to whoever the bot is talking to in the terminal.
