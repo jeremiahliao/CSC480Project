@@ -20,13 +20,12 @@ if __name__ == "__main__":
         user_input = input("You: ")
 
         if user_input.lower() in ["quit", "exit", "bye"]:
-            print("Chatbot: Goodbye!")
             break
 
-        conversations += user_input
+        conversations += user_input + "\n"
         response = chat_with_AI(conversations)
         print("Chatbot: ", response)
-        conversations += response
+        conversations += response + "\n"
 
 # ADDITIONAL COMMENTS
 # - On line #20, the "You: " inside of the 'input()' command could be changed to whoever the bot is talking to in the terminal.
