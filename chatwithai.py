@@ -2,7 +2,7 @@ from openai import OpenAI
 import streamlit as st
 from dotenv import load_dotenv
 import os
-import shelve
+import shelve   
 
 def streamlit_call_chatbot():
     load_dotenv()
@@ -59,3 +59,5 @@ def streamlit_call_chatbot():
         st.session_state.messages = []
         save_chat_history([])
         st.rerun()
+
+# USE THIS CHATBOT
