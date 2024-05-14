@@ -1,34 +1,71 @@
 from openai import OpenAI
 import streamlit as st
-from dotenv import load_dotenv
 import os
-import shelve   
+from dotenv import load_dotenv
+import json
 
-def streamlit_call_chatbot():
+
+
+def streamlit_call_chatbot(voiceID):
     load_dotenv()
 
+    voiceID = 112570
+
+
+    st.write(f"Your Voice ID: {voiceID}")
     USER_AVATAR = "👤"
     BOT_AVATAR = "🤖"
-    client = OpenAI(api_key=os.getenv("OPENAI_AI_KEY"))
+    api_key = os.getenv('OPENAI_API_KEY')
+
+    client = OpenAI(api_key=api_key)
 
     if "openai_model" not in st.session_state:
         st.session_state["openai_model"] = "gpt-3.5-turbo"
-    
+
+
+
+    def get_chat_history_file():
+        return f"chat_history_{voiceID}.json"
+
+
+
     def load_chat_history():
-        with shelve.open("chat_history") as db:
-            return db.get("messages", [])
-    
+        try:
+            with open(get_chat_history_file(), "r") as file:
+                print("working")
+                return json.load(file)
+        except FileNotFoundError:
+            print(f"No existing chat history for voiceID: {voiceID}")
+            return []
+        except json.JSONDecodeError:
+            print(f"Error decoding JSON for voiceID: {voiceID}")
+            return []
+        except Exception as e:
+            print(f"Error loading chat history: {e}")
+            return []
+
+
+
     def save_chat_history(messages):
-        with shelve.open("chat_history") as db:
-            db["messages"] = messages
+        try:
+            with open(get_chat_history_file(), "w") as file:
+                json.dump(messages, file, indent=4)
+                print(f"Chat history saved for voiceID: {voiceID}")
+        except Exception as e:
+            print(f"Error saving chat history: {e}")
+
+
 
     if "messages" not in st.session_state:
         st.session_state.messages = load_chat_history()
 
+
     with st.sidebar:
         if st.button("Delete Chat History"):
             st.session_state.messages = []
-            save_chat_history([]) 
+            save_chat_history([])
+            ##UPDATE THIS##
+
 
     for message in st.session_state.messages:
         avatar = USER_AVATAR if message["role"] == "user" else BOT_AVATAR
@@ -44,20 +81,18 @@ def streamlit_call_chatbot():
             message_placeholder = st.empty()
             full_response = ""
             for response in client.chat.completions.create(
-                model = st.session_state["openai_model"],
-                messages = st.session_state["messages"],
-                stream = True,
+                model=st.session_state["openai_model"],
+                messages=st.session_state["messages"],
+                stream=True,
             ):
                 full_response += response.choices[0].delta.content or ""
                 message_placeholder.markdown(full_response + "|")
             message_placeholder.markdown(full_response)
         st.session_state.messages.append({"role": "assistant", "content": full_response})
 
-    save_chat_history(st.session_state.messages)
 
-    if(st.button("End Conversation")):
-        st.session_state.messages = []
-        save_chat_history([])
+    if st.button("End Conversation"):
+        save_chat_history(st.session_state.messages)
+
+        ##FIX THIS##
         st.rerun()
-
-# USE THIS CHATBOT

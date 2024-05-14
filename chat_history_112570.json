@@ -1,0 +1,26 @@
+[
+    {
+        "role": "user",
+        "content": "lets go"
+    },
+    {
+        "role": "assistant",
+        "content": "Sure, where would you like to go?"
+    },
+    {
+        "role": "user",
+        "content": "what was the last thing i told you"
+    },
+    {
+        "role": "assistant",
+        "content": "You said \"lets go.\""
+    },
+    {
+        "role": "user",
+        "content": "NICE"
+    },
+    {
+        "role": "assistant",
+        "content": "I'm glad you think so! What else would you like to talk about or do?"
+    }
+]

@@ -1,13 +1,13 @@
 import streamlit as st
 from st_audiorec import st_audiorec
-from chatbot import chat_with_AI
 from chatwithai import streamlit_call_chatbot
+import random
+
 
 def welcomePage():
     st.title("CSC-480 Final Project\nBy: Noor Dhaliwal, Matthew Le, and Jeremiah Liao")
     # write a project introduction here
     # st.write()
-
     if(st.button("Next")):
         st.session_state.page = "voiceInput"
         st.rerun()
@@ -19,6 +19,10 @@ def voiceInput():
     wav_audio_data = st_audiorec()
     if wav_audio_data is not None:
         st.audio(wav_audio_data, format='audio/wav')
+
+
+    st.session_state.voiceID = random.randint(55,123123)
+
 
     if(st.button("Back")):
         st.session_state.page = "Welcome"
@@ -33,7 +37,7 @@ def chatWithAI():
     st.write("Type anything into the textbox below in order to start your conversation with the AI!")
     st.write("Once you're done, press the 'End Conversation' button to end the conversation and refresh the page!")
 
-    streamlit_call_chatbot()
+    streamlit_call_chatbot(st.session_state.voiceID)
     
 def main():
     page = st.session_state.get("page", "Welcome")
