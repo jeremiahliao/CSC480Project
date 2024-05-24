@@ -9,9 +9,6 @@ import json
 def streamlit_call_chatbot(voiceID):
     load_dotenv()
 
-    voiceID = 112570
-
-
     st.write(f"Your Voice ID: {voiceID}")
     USER_AVATAR = "👤"
     BOT_AVATAR = "🤖"
@@ -32,10 +29,9 @@ def streamlit_call_chatbot(voiceID):
     def load_chat_history():
         try:
             with open(get_chat_history_file(), "r") as file:
-                print("working")
                 return json.load(file)
         except FileNotFoundError:
-            print(f"No existing chat history for voiceID: {voiceID}")
+            st.write(f"No existing chat history for voiceID: {voiceID}")
             return []
         except json.JSONDecodeError:
             print(f"Error decoding JSON for voiceID: {voiceID}")
@@ -50,7 +46,7 @@ def streamlit_call_chatbot(voiceID):
         try:
             with open(get_chat_history_file(), "w") as file:
                 json.dump(messages, file, indent=4)
-                print(f"Chat history saved for voiceID: {voiceID}")
+                st.write(f"Chat history saved for voiceID: {voiceID}")
         except Exception as e:
             print(f"Error saving chat history: {e}")
 
