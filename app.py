@@ -41,7 +41,7 @@ def voiceInput():
             st.write("No similar voice found. Initializing new user.")
             name = st.text_input("What is your name?")
             if(st.button("Save My Voice!")):
-                saveNew(name, wav_audio_data)
+                saveNew(name, filename)
                 clear_cache()
                 st.rerun()
 

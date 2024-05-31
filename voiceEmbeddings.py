@@ -26,6 +26,16 @@ def reduce_features(features, n_components=None):
 
 def get_embeddings(features):
     features_flat = f"{features.flatten().tolist()}"
+    # print(features_flat)
+    embeddings = []
+    chunk_size = 8000
+
+    for i in range(0, len(features_flat), 8000):
+        chunk = features_flat[i:i+chunk_size]
+        # print(len(chunk))
+        chunk_embedding = client.embeddings.create(input=chunk, model="text-embedding-3-small").data[0].embedding
+        embeddings += chunk_embedding
+    return embeddings
     return client.embeddings.create(input=features_flat, model="text-embedding-3-small").data[0].embedding
 
 def save_embeddings_with_names(embeddings_dict, file_name):
